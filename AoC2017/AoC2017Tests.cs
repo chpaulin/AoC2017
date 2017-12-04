@@ -111,6 +111,16 @@ namespace AoC2017
 
                 result.ShouldBe(18);
             }
+
+            [TestMethod]
+            public void Day2_Test2()
+            {
+                var input = "5\t9\t2\t8\r\n9\t4\t7\t3\r\n3\t8\t6\t5";
+
+                var result = _day.Run2(input);
+
+                result.ShouldBe(9);
+            }
         }
     }
 }

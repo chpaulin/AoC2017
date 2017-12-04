@@ -35,7 +35,7 @@ namespace AoC2017
             Console.Write(Environment.NewLine);
             Console.WriteLine($"Result: {result1}");
 
-            var result2 = Run(input);
+            var result2 = Run2(input);
 
             Console.WriteLine("--------------------------");
             Console.WriteLine("       DAY 2 - Part2      ");
@@ -68,6 +68,48 @@ namespace AoC2017
 
                 return sum;
             }
+        }
+
+        public int Run2(string input)
+        {
+            using (var reader = new StringReader(input))
+            {
+                var sum = 0;
+
+                while (true)
+                {
+                    var line = reader.ReadLine();
+
+                    if (line == null)
+                        break;
+
+                    var numbers = line
+                        .Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => int.Parse(s))
+                        .OrderByDescending(n => n)
+                        .ToList();
+
+                    sum += GetCheckSum(numbers);
+                }
+
+                return sum;
+            }
+        }
+
+        private static int GetCheckSum(List<int> numbers)
+        {
+            for (int i = 0; i < numbers.Count; i++)
+            {
+                for (int j = i + 1; j < numbers.Count; j++)
+                {
+                    if (numbers[i] % numbers[j] == 0)
+                    {
+                        return numbers[i] / numbers[j];
+                    }
+                }
+            }
+
+            return 0;
         }
     }
 }
