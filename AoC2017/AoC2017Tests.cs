@@ -90,5 +90,27 @@ namespace AoC2017
                 result.ShouldBe(4);
             }
         }
+
+        [TestClass]
+        public class Day2Tests
+        {
+            private Day2 _day;
+
+            [TestInitialize]
+            public void Initialize()
+            {
+                _day = new Day2();
+            }
+
+            [TestMethod]
+            public void Day2_Test1()
+            {
+                var input = "5\t1\t9\t5\r\n7\t5\t3\r\n2\t4\t6\t8";
+
+                var result = _day.Run(input);
+
+                result.ShouldBe(18);
+            }
+        }
     }
 }

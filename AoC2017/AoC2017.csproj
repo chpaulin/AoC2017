@@ -58,6 +58,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AoC2017Tests.cs" />
+    <Compile Include="Day2.cs" />
     <Compile Include="Day1.cs" />
     <Compile Include="IDay.cs" />
     <Compile Include="Program.cs" />
