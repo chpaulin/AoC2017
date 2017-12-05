@@ -1101,7 +1101,7 @@ namespace AoC2017
 -155
 -971
 -1074";
-            var result1 = Run(input);
+            var result1 = Run(input, int.MaxValue);
 
             Console.WriteLine("--------------------------");
             Console.WriteLine("       DAY 1 - Part1      ");
@@ -1109,7 +1109,7 @@ namespace AoC2017
             Console.Write(Environment.NewLine);
             Console.WriteLine($"Result: {result1}");
 
-            var result2 = Run(input);
+            var result2 = Run(input, 3);
 
             Console.WriteLine("--------------------------");
             Console.WriteLine("       DAY 1 - Part2      ");
@@ -1118,7 +1118,7 @@ namespace AoC2017
             Console.WriteLine($"Result: {result2}");
         }
 
-        public int Run(string input)
+        public int Run(string input, int maxJump)
         {
             var numbers = GetNumbers(input).ToList();
 
@@ -1127,7 +1127,7 @@ namespace AoC2017
 
             while (position < numbers.Count && position >= 0)
             {
-                position = Iterate(numbers, position);
+                position = Iterate(numbers, position, maxJump);
                 jumps++;
             }
 
@@ -1151,11 +1151,14 @@ namespace AoC2017
             }
         }
 
-        public int Iterate(IList<int> input, int position)
+        public int Iterate(IList<int> input, int position, int maxJump)
         {
             var number = input[position];
-            
-            input[position] += 1;
+
+            if (number < maxJump)
+                input[position] += 1;         
+            else
+                input[position] -= 1;
 
             return position + number;
         }

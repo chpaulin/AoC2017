@@ -139,9 +139,19 @@ namespace AoC2017
             {
                 var input = "0\r\n3\r\n0\r\n1\r\n-3";
 
-                var result = _day.Run(input);
+                var result = _day.Run(input, int.MaxValue);
 
                 result.ShouldBe(5);
+            }
+
+            [TestMethod]
+            public void Day5_Test2()
+            {
+                var input = "0\r\n3\r\n0\r\n1\r\n-3";
+
+                var result = _day.Run(input, 3);
+
+                result.ShouldBe(10);
             }
         }
     }
