@@ -170,6 +170,17 @@ namespace AoC2017
             }
 
             [TestMethod]
+            public void Day6_Test2()
+            {
+                var input = "0\t2\t7\t0";
+                var day = new Day6();
+
+                var result = day.Run2(input);
+
+                result.ShouldBe(4);
+            }
+
+            [TestMethod]
             public void Day6_IterateTest1()
             {
                 var input = new[] {0, 2, 7, 0};

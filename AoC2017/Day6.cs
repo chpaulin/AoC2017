@@ -19,7 +19,7 @@ namespace AoC2017
             Console.Write(Environment.NewLine);
             Console.WriteLine($"Result: {result1}");
 
-            var result2 = Run(input);
+            var result2 = Run2(input);
 
             Console.WriteLine("--------------------------");
             Console.WriteLine("       DAY 1 - Part2      ");
@@ -50,6 +50,28 @@ namespace AoC2017
             }
 
             return count;
+        }
+
+        public int Run2(string input)
+        {
+            var numbers = input.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+
+            var seen = new List<string>();
+
+            string resultString = input;
+
+            while (!seen.Any(v => v.Equals(resultString)))
+            {
+                seen.Add(resultString);
+
+                var result = Iterate(numbers);
+
+                resultString = string.Join("\t", result);
+            }
+
+            var position = seen.IndexOf(resultString);
+
+            return seen.Count - position;
         }
 
         public int[] Iterate(int[] input)
