@@ -154,5 +154,90 @@ namespace AoC2017
                 result.ShouldBe(10);
             }
         }
+
+        [TestClass]
+        public class Day6Tests
+        {
+            [TestMethod]
+            public void Day6_Test1()
+            {
+                var input = "0\t2\t7\t0";
+                var day = new Day6();
+
+                var result = day.Run(input);
+
+                result.ShouldBe(5);
+            }
+
+            [TestMethod]
+            public void Day6_IterateTest1()
+            {
+                var input = new[] {0, 2, 7, 0};
+                var day = new Day6();
+
+                var result = day.Iterate(input);
+
+                result[0].ShouldBe(2);
+                result[1].ShouldBe(4);
+                result[2].ShouldBe(1);
+                result[3].ShouldBe(2);
+            }
+
+            [TestMethod]
+            public void Day6_IterateTest2()
+            {
+                var input = new[] { 2, 4, 1, 2 };
+                var day = new Day6();
+
+                var result = day.Iterate(input);
+
+                result[0].ShouldBe(3);
+                result[1].ShouldBe(1);
+                result[2].ShouldBe(2);
+                result[3].ShouldBe(3);
+            }
+
+            [TestMethod]
+            public void Day6_IterateTest3()
+            {
+                var input = new[] { 3, 1, 2, 3 };
+                var day = new Day6();
+
+                var result = day.Iterate(input);
+
+                result[0].ShouldBe(0);
+                result[1].ShouldBe(2);
+                result[2].ShouldBe(3);
+                result[3].ShouldBe(4);
+            }
+
+            [TestMethod]
+            public void Day6_IterateTest4()
+            {
+                var input = new[] { 0, 2, 3, 4 };
+                var day = new Day6();
+
+                var result = day.Iterate(input);
+
+                result[0].ShouldBe(1);
+                result[1].ShouldBe(3);
+                result[2].ShouldBe(4);
+                result[3].ShouldBe(1);
+            }
+
+            [TestMethod]
+            public void Day6_IterateTest5()
+            {
+                var input = new[] { 1, 3, 4, 1 };
+                var day = new Day6();
+
+                var result = day.Iterate(input);
+
+                result[0].ShouldBe(2);
+                result[1].ShouldBe(4);
+                result[2].ShouldBe(1);
+                result[3].ShouldBe(2);
+            }
+        }
     }
 }

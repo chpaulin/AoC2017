@@ -8,7 +8,7 @@ namespace AoC2017
 {
     class Program
     {
-        private static IDay[] _days = new IDay[] { new Day1(), new Day2(), new DayX(), new DayX(), new Day5() };
+        private static IDay[] _days = new IDay[] { new Day1(), new Day2(), new DayX(), new DayX(), new Day5(), new Day6() };
 
         static void Main()
         {
