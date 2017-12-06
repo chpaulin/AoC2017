@@ -124,6 +124,54 @@ namespace AoC2017
         }
 
         [TestClass]
+        public class Day3Tests
+        {
+            [TestMethod]
+            public void Day3_Test1()
+            {
+                var day = new Day3();
+                var input = 1;
+
+                var result = day.Run(input);
+
+                result.ShouldBe(0);
+            }
+
+            [TestMethod]
+            public void Day3_Test2()
+            {
+                var day = new Day3();
+                var input = 12;
+
+                var result = day.Run(input);
+
+                result.ShouldBe(3);
+            }
+
+            [TestMethod]
+            public void Day3_Test3()
+            {
+                var day = new Day3();
+                var input = 23;
+
+                var result = day.Run(input);
+
+                result.ShouldBe(2);
+            }
+
+            [TestMethod]
+            public void Day3_Test4()
+            {
+                var day = new Day3();
+                var input = 1024;
+
+                var result = day.Run(input);
+
+                result.ShouldBe(31);
+            }
+        }
+
+        [TestClass]
         public class Day5Tests
         {
             private Day5 _day;

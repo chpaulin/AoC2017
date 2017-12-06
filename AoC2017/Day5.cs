@@ -1104,7 +1104,7 @@ namespace AoC2017
             var result1 = Run(input, int.MaxValue);
 
             Console.WriteLine("--------------------------");
-            Console.WriteLine("       DAY 1 - Part1      ");
+            Console.WriteLine("       DAY 5 - Part1      ");
             Console.WriteLine("--------------------------");
             Console.Write(Environment.NewLine);
             Console.WriteLine($"Result: {result1}");
@@ -1112,7 +1112,7 @@ namespace AoC2017
             var result2 = Run(input, 3);
 
             Console.WriteLine("--------------------------");
-            Console.WriteLine("       DAY 1 - Part2      ");
+            Console.WriteLine("       DAY 5 - Part2      ");
             Console.WriteLine("--------------------------");
             Console.Write(Environment.NewLine);
             Console.WriteLine($"Result: {result2}");

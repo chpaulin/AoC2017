@@ -14,7 +14,7 @@ namespace AoC2017
             var result1 = Run(input);
 
             Console.WriteLine("--------------------------");
-            Console.WriteLine("       DAY 1 - Part1      ");
+            Console.WriteLine("       DAY X - Part1      ");
             Console.WriteLine("--------------------------");
             Console.Write(Environment.NewLine);
             Console.WriteLine($"Result: {result1}");
@@ -22,7 +22,7 @@ namespace AoC2017
             var result2 = Run(input);
 
             Console.WriteLine("--------------------------");
-            Console.WriteLine("       DAY 1 - Part2      ");
+            Console.WriteLine("       DAY X - Part2      ");
             Console.WriteLine("--------------------------");
             Console.Write(Environment.NewLine);
             Console.WriteLine($"Result: {result2}");
