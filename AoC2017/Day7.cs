@@ -21,7 +21,7 @@ namespace AoC2017
             Console.Write(Environment.NewLine);
             Console.WriteLine($"Result: {result1}");
 
-            var result2 = Run(input);
+            var result2 = Run2(input);
 
             Console.WriteLine("--------------------------");
             Console.WriteLine("       DAY 7 - Part2      ");
@@ -30,9 +30,22 @@ namespace AoC2017
             Console.WriteLine($"Result: {result2}");
         }
 
+        public int Run2(string input)
+        {
+            var executables = GetExecutables(input);
+
+            PopulateChildLists(executables);
+
+            var rootExecutable = GetRootExecutable(executables);
+
+            var diviatingExe = GetDiviatingChildWeightExecutable(rootExecutable);
+
+            return diviatingExe.Executable.Weight - diviatingExe.Diviation;
+        }
+
         public string Run(string input)
         {
-            var executables = GetPrograms(input);
+            var executables = GetExecutables(input);
 
             PopulateChildLists(executables);
 
@@ -67,7 +80,7 @@ namespace AoC2017
             return results;
         }
 
-        private IReadOnlyList<Executable> GetPrograms(string input)
+        public IReadOnlyList<Executable> GetExecutables(string input)
         {
             var list = new List<Executable>();
 
@@ -80,6 +93,7 @@ namespace AoC2017
                     var executable = new Executable
                     {
                         Name = line.Split(' ').First(),
+                        Weight = int.Parse(line.Split(')').First().Split('(').Last()),
                         Entry = line
                     };
 
@@ -108,6 +122,38 @@ namespace AoC2017
 
             return 0;
         }
+
+        public int GetExecutableWeight(Executable executable)
+        {
+            return executable.Weight + executable.Children.Sum(GetExecutableWeight);
+        }
+
+        public DiviatingExecutable GetDiviatingChildWeightExecutable(Executable exe)
+        {
+            var weightDistribution =
+                exe.Children.Select(c => new { TotalWeight = GetExecutableWeight(c), Executable = c });
+
+            var groupedWeightDistribution = weightDistribution.GroupBy(d => d.TotalWeight);
+
+            if (groupedWeightDistribution.Count() > 1)
+            {
+                var ordered = weightDistribution.OrderByDescending(d => d.TotalWeight);
+                var divitatingExecutable = ordered.First();
+
+                var childDiviator = GetDiviatingChildWeightExecutable(divitatingExecutable.Executable);
+
+                if (childDiviator != null)
+                    return childDiviator;
+
+                return new DiviatingExecutable
+                {
+                    Executable = divitatingExecutable.Executable,
+                    Diviation = divitatingExecutable.TotalWeight - ordered.Select(e => e.TotalWeight).Last()
+                };
+            }
+
+            return exe.Children.Select(GetDiviatingChildWeightExecutable).FirstOrDefault(d => d != null);
+        }
     }
 
     public class Executable
@@ -115,5 +161,12 @@ namespace AoC2017
         public string Name { get; set; }
         public string Entry { get; set; }
         public IReadOnlyList<Executable> Children { get; set; } = new List<Executable>();
+        public int Weight { get; set; }
+    }
+
+    public class DiviatingExecutable
+    {
+        public int Diviation { get; set; }
+        public Executable Executable { get; set; }
     }
 }

@@ -330,6 +330,32 @@ cntj (57)";
         }
 
         [TestMethod]
+        public void Day7_GetExecutables()
+        {
+            var input =
+                @"pbga (66)
+xhth (57)
+ebii (61)
+havc (66)
+ktlj (57)
+fwft (72) -> ktlj, cntj, xhth
+qoyq (66)
+padx (45) -> pbga, havc, qoyq
+tknk (41) -> ugml, padx, fwft
+jptl (61)
+ugml (68) -> gyxo, ebii, jptl
+gyxo (61)
+cntj (57)";
+            var day = new Day7();
+
+            var results = day.GetExecutables(input);
+
+            results.Count.ShouldBe(13);
+            results.First().Name.ShouldBe("pbga");
+            results.First().Weight.ShouldBe(66);
+        }
+
+        [TestMethod]
         public void Day7_GetChildrenFromEntry()
         {
             var input = "fwft (72) -> ktlj, cntj, xhth";
@@ -361,7 +387,7 @@ cntj (57)";
 
             var day = new Day7();
 
-            var exe = new Executable { Name = "ktlj", Entry = input };
+            var exe = new Executable {Name = "ktlj", Entry = input};
 
             var executables = new List<Executable>(new[]
             {
@@ -407,7 +433,7 @@ cntj (57)";
 
             var day = new Day7();
 
-            var exe = new Executable { Name = "fwft", Entry = input };
+            var exe = new Executable {Name = "fwft", Entry = input};
 
             var executables = new List<Executable>(new[]
             {
@@ -473,6 +499,76 @@ cntj (57)";
             var result = day.GetChildDepth(root);
 
             result.ShouldBe(1);
+        }
+
+        [TestMethod]
+        public void Day7_GetExecutableWeight()
+        {
+            var input = "fwft (72) -> ktlj, cntj, xhth";
+
+            var day = new Day7();
+
+            var children = new List<Executable>(new[]
+            {
+                new Executable {Name = "ktlj", Entry = "ktlj (57)", Weight = 57},
+                new Executable {Name = "cntj", Entry = "cntj (57)", Weight = 57},
+                new Executable {Name = "xhth", Entry = "xhth (57)", Weight = 57},
+            });
+
+            var exe = new Executable {Name = "fwft", Entry = input, Weight = 72, Children = children};
+
+            var weight = day.GetExecutableWeight(exe);
+
+            weight.ShouldBe(243);
+        }
+
+        [TestMethod]
+        public void Day7_GetDiviatingChildWeightExecutable()
+        {            
+            var day = new Day7();
+
+            var children_ugml = new List<Executable>(new[]
+            {
+                new Executable {Name = "gyxo", Entry = "ugml (61)", Weight = 61},
+                new Executable {Name = "ebii", Entry = "padx (61)", Weight = 61},
+                new Executable {Name = "jptl", Entry = "fwft (61)", Weight = 61},
+            });
+
+            var children_padx = new List<Executable>(new[]
+            {
+                new Executable {Name = "pbga", Entry = "pbga (66)", Weight = 66},
+                new Executable {Name = "havc", Entry = "havc (66)", Weight = 66},
+                new Executable {Name = "qoyq", Entry = "qoyq (66)", Weight = 66},
+            });
+
+            var children_fwft = new List<Executable>(new[]
+            {
+                new Executable {Name = "ktlj", Entry = "ktlj (57)", Weight = 57 },
+                new Executable {Name = "cntj", Entry = "cntj (57)", Weight = 57 },
+                new Executable {Name = "xhth", Entry = "xhth (57)", Weight = 57 },
+            });
+
+            var ugml = new Executable
+            {
+                Name = "ugml",
+                Entry = "ugml (68)",
+                Weight = 68,
+                Children = children_ugml
+            };
+
+            var childrenRoot = new List<Executable>(new[]
+            {
+                ugml,
+                new Executable {Name = "padx", Entry = "padx (45)", Weight = 45, Children = children_padx},
+                new Executable {Name = "fwft", Entry = "fwft (72)", Weight = 72, Children = children_fwft},
+            });
+
+            var root = new Executable { Name = "tknk", Entry = "tknk (41) -> ugml, padx, fwft", Weight = 41, Children = childrenRoot };
+
+            var diviatingExecutable = day.GetDiviatingChildWeightExecutable(root);
+
+            diviatingExecutable.Executable.ShouldBe(ugml);
+            diviatingExecutable.Diviation.ShouldBe(8);
         }
     }
 }
