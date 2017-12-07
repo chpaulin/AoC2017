@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 
@@ -245,7 +247,7 @@ namespace AoC2017
             [TestMethod]
             public void Day6_IterateTest2()
             {
-                var input = new[] { 2, 4, 1, 2 };
+                var input = new[] {2, 4, 1, 2};
                 var day = new Day6();
 
                 var result = day.Iterate(input);
@@ -259,7 +261,7 @@ namespace AoC2017
             [TestMethod]
             public void Day6_IterateTest3()
             {
-                var input = new[] { 3, 1, 2, 3 };
+                var input = new[] {3, 1, 2, 3};
                 var day = new Day6();
 
                 var result = day.Iterate(input);
@@ -273,7 +275,7 @@ namespace AoC2017
             [TestMethod]
             public void Day6_IterateTest4()
             {
-                var input = new[] { 0, 2, 3, 4 };
+                var input = new[] {0, 2, 3, 4};
                 var day = new Day6();
 
                 var result = day.Iterate(input);
@@ -287,7 +289,7 @@ namespace AoC2017
             [TestMethod]
             public void Day6_IterateTest5()
             {
-                var input = new[] { 1, 3, 4, 1 };
+                var input = new[] {1, 3, 4, 1};
                 var day = new Day6();
 
                 var result = day.Iterate(input);
@@ -297,6 +299,180 @@ namespace AoC2017
                 result[2].ShouldBe(1);
                 result[3].ShouldBe(2);
             }
+        }
+
+        [TestClass]
+        public class Day7Tests
+        {
+            [TestMethod]
+            public void Day7_Test1()
+            {
+                var input =
+                    @"pbga (66)
+xhth (57)
+ebii (61)
+havc (66)
+ktlj (57)
+fwft (72) -> ktlj, cntj, xhth
+qoyq (66)
+padx (45) -> pbga, havc, qoyq
+tknk (41) -> ugml, padx, fwft
+jptl (61)
+ugml (68) -> gyxo, ebii, jptl
+gyxo (61)
+cntj (57)";
+                var day = new Day7();
+
+                var bottomProgram = day.Run(input);
+
+                bottomProgram.ShouldBe("tknk");
+            }
+        }
+
+        [TestMethod]
+        public void Day7_GetChildrenFromEntry()
+        {
+            var input = "fwft (72) -> ktlj, cntj, xhth";
+
+            var day = new Day7();
+
+            var exe = new Executable {Name = "fwft", Entry = input};
+
+            var executables = new List<Executable>(new[]
+            {
+                exe,
+                new Executable {Name = "ktlj"},
+                new Executable {Name = "cntj"},
+                new Executable {Name = "xhth"},
+            });
+
+            var results = day.GetChildren(exe, executables);
+
+            results.Count.ShouldBe(3);
+            results.ShouldContain(c => c.Name == "ktlj");
+            results.ShouldContain(c => c.Name == "cntj");
+            results.ShouldContain(c => c.Name == "xhth");
+        }
+
+        [TestMethod]
+        public void Day7_GetChildrenFromEntryWhenNone()
+        {
+            var input = "ktlj (57)";
+
+            var day = new Day7();
+
+            var exe = new Executable { Name = "ktlj", Entry = input };
+
+            var executables = new List<Executable>(new[]
+            {
+                exe,
+                new Executable {Name = "cntj"},
+                new Executable {Name = "xhth"},
+            });
+
+            var results = day.GetChildren(exe, executables);
+
+            results.Count.ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void Day7_PopulateChildListsWithThreeLevels()
+        {
+
+            var day = new Day7();
+
+            var executables = new List<Executable>(new[]
+            {
+                new Executable {Name = "fwft", Entry = "fwft (72) -> ktlj"},
+                new Executable {Name = "ktlj", Entry = "ktlj (57) -> cntj"},
+                new Executable {Name = "cntj", Entry = "cntj (57) -> xhth"},
+                new Executable {Name = "xhth", Entry = "xhth (57)"},
+            });
+
+            day.PopulateChildLists(executables);
+
+            executables[0].Children.Count.ShouldBe(1);
+            executables[0].Children.ShouldContain(c => c.Name == "ktlj");
+            executables[1].Children.Count.ShouldBe(1);
+            executables[1].Children.ShouldContain(c => c.Name == "cntj");
+            executables[2].Children.Count.ShouldBe(1);
+            executables[2].Children.ShouldContain(c => c.Name == "xhth");
+            executables[3].Children.Count.ShouldBe(0);
+        }
+
+        [TestMethod]
+        public void Day7_PopulateChildLists()
+        {
+            var input = "fwft (72) -> ktlj, cntj, xhth";
+
+            var day = new Day7();
+
+            var exe = new Executable { Name = "fwft", Entry = input };
+
+            var executables = new List<Executable>(new[]
+            {
+                exe,
+                new Executable {Name = "ktlj", Entry = "ktlj (57)"},
+                new Executable {Name = "cntj", Entry = "cntj (57)"},
+                new Executable {Name = "xhth", Entry = "xhth (57)"},
+            });
+
+            day.PopulateChildLists(executables);
+
+            exe.Children.Count.ShouldBe(3);
+            exe.Children.ShouldContain(c => c.Name == "ktlj");
+            exe.Children.ShouldContain(c => c.Name == "cntj");
+            exe.Children.ShouldContain(c => c.Name == "xhth");
+        }
+
+        [TestMethod]
+        public void Day7_GetRootExecutable()
+        {
+            var day = new Day7();
+
+            var child1 = new Executable {Name = "ktlj", Entry = "ktlj (57)"};
+            var child2 = new Executable {Name = "cntj", Entry = "cntj (57)"};
+            var child3 = new Executable {Name = "xhth", Entry = "xhth (57)"};
+
+            var root = new Executable
+            {
+                Name = "fwft",
+                Entry = "fwft (72) -> ktlj, cntj, xhth",
+                Children = new List<Executable>(new[] {child1, child2, child3})
+            };
+
+            var executables = new List<Executable>(new[]
+            {
+                root,
+                child1,
+                child2,
+                child3,
+            });
+
+            var result = day.GetRootExecutable(executables);
+
+            result.ShouldBe(root);
+        }
+
+        [TestMethod]
+        public void Day7_GetChildDepth()
+        {
+            var day = new Day7();
+
+            var child1 = new Executable {Name = "ktlj", Entry = "ktlj (57)"};
+            var child2 = new Executable {Name = "cntj", Entry = "cntj (57)"};
+            var child3 = new Executable {Name = "xhth", Entry = "xhth (57)"};
+
+            var root = new Executable
+            {
+                Name = "fwft",
+                Entry = "fwft (72) -> ktlj, cntj, xhth",
+                Children = new List<Executable>(new[] {child1, child2, child3})
+            };
+
+            var result = day.GetChildDepth(root);
+
+            result.ShouldBe(1);
         }
     }
 }
