@@ -30,6 +30,9 @@ namespace AoC2017
 
         public int Run(int input)
         {
+            if (input == 1)
+                return 0;
+
             var buckets = new List<int[]>();
 
             buckets.Add(new int[1]);
